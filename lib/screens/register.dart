@@ -1,5 +1,5 @@
 import 'package:blog_app/models/user.dart';
-import 'package:blog_app/screens/login.dart';
+
 import 'package:blog_app/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -49,7 +49,6 @@ class _RegisterState extends State<Register> {
   }
 
   void navigateToHome() {
-    print('redirect');
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
         builder: (context) => const Home(),

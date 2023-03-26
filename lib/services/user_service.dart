@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:blog_app/constant.dart';
 import 'package:blog_app/models/api_response.dart';
@@ -17,6 +18,10 @@ Future<ApiResponse> loginController(String email, String password) async {
         'email': email,
         'password': password,
       },
+    ).onError(
+      (error, stackTrace) {
+        return http.Response(jsonEncode(serverError), 501);
+      },
     );
 
     switch (response.statusCode) {
@@ -29,6 +34,9 @@ Future<ApiResponse> loginController(String email, String password) async {
         break;
       case 403:
         apiResponse.error = json.decode(response.body)['message'];
+        break;
+      case 501:
+        apiResponse.error = json.decode(response.body);
         break;
       default:
         apiResponse.error = somethingWentWrong;
@@ -54,6 +62,10 @@ Future<ApiResponse> register(String name, String email, String password) async {
         'password': password,
         'password_confirmation': password,
       },
+    ).onError(
+      (error, stackTrace) {
+        return http.Response(jsonEncode(serverError), 501);
+      },
     );
 
     switch (response.statusCode) {
@@ -61,7 +73,7 @@ Future<ApiResponse> register(String name, String email, String password) async {
         apiResponse.data = User.fromJson(json.decode(response.body));
         break;
       case 422:
-      final errors = json.decode(response.body)['errors'];
+        final errors = json.decode(response.body)['errors'];
         apiResponse.error = errors[errors.keys.elementAt(0)][0];
         break;
       case 403:
@@ -96,7 +108,7 @@ Future<ApiResponse> userDetail() async {
         apiResponse.error = unauthorized;
         break;
       case 422:
-      final errors = json.decode(response.body)['errors'];
+        final errors = json.decode(response.body)['errors'];
         apiResponse.error = errors[errors.keys.elementAt(0)][0];
         break;
       case 403:
@@ -127,4 +139,6 @@ Future<bool> logout() async {
   return await pref.remove('token');
 }
 
-
+String? getStringImage(File? file) {
+  return base64Encode(file!.readAsBytesSync());
+}

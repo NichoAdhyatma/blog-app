@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-const baseURL = "http://192.168.8.59:8000/api";
+const baseURL = "http://192.168.45.59:8000/api";
 const loginURL = '$baseURL/login';
 const registerURL = '$baseURL/register';
 const logoutURL = '$baseURL/logout';
 const userURL = '$baseURL/user';
-const postURL = '$baseURL/posts';
+const postURL = '$baseURL/post';
 const commentURL = '$baseURL/comments';
 
 const serverError = "server error";
